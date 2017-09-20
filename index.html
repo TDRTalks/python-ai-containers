@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Containers, AI, and Awesome Music</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/moon.css">
@@ -31,20 +31,28 @@
 					</small></p>
 				</section>
 
-				<section><!----------------------------------- Slide -------------------------------------------------------->
-					<h2><a href="http://about.me/iphilpot">http://about.me/iphilpot</a></h2>
+				<section data-background="img/sponsors.png"><!----------------------------------- Slide -------------------------------------------------------->
+					
 				</section>
 
 				<section><!----------------------------------- Slide -------------------------------------------------------->
-					<h2><a href="http://ianp.co/ai-talk">http://ianp.co/ai-talk</a></h2>
+					<h2><a href="http://aka.ms/atlantarst" style="text-transform: none">http://aka.ms/atlantarst</a></h2>
 				</section>
 
+				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<h2><a href="http://ianp.co/ai-talk" style="text-transform: none">http://ianp.co/ai-talk</a></h2>
+				</section>
+				
 				<section><!----------------------------------- Slide -------------------------------------------------------->
 					<p>Question: <br> Who is the sappiest big hair band of the 80s?</p>
 				</section>
-
+				
 				<section><!----------------------------------- Slide -------------------------------------------------------->
 					<p>Answer: <br> White Snake</p>
+				</section>
+				
+				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<h2>No UI... ?!?</h2>
 				</section>
 
 				<section><!----------------------------------- Slide -------------------------------------------------------->
@@ -83,8 +91,46 @@
 				</section>
 
 				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<h2>Wikipedia Service</h2>
+					<pre><code class="hljs" data-trim contenteditable>
+import json
+import wikipedia
+
+class WikiData:
+  def __init__(self, page_name):
+    self.page_name = page_name
+	
+  def get_page_links(self):
+    big_hair_list = wikipedia.page(self.page_name)
+    return big_hair_list.links
+					</code></pre>
+					<p>GitHub link: <a href="http://ianp.co/2xnLSK0">wiki_data.py</a></p>
+				</section>
+
+				<section><!----------------------------------- Slide -------------------------------------------------------->
 					<h3>Azure Cosmos DB</h3>
 					<img src="img/Cosmos_logo.png" style="background:none; border:none; box-shadow:none;" alt="CosmosDb Logo">
+				</section>
+
+				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<h2>Cosmos DB Service</h2>
+					<pre><code class="hljs" data-trim contenteditable>
+from pydocumentdb import document_client
+from json import JSONEncoder
+
+class CosmosDb:
+  def __init__(self, config):
+    self.config = config
+    self.client = document_client.DocumentClient(
+	  config.cosmos_endpoint, 
+	  {'masterKey': config.cosmos_master_key}
+    )
+
+  def insert(self, entity):
+    data = entity.__dict__
+    self.client.CreateDocument(self.collection['_self'], data)
+					</code></pre>
+					<p>GitHub link: <a href="http://ianp.co/2xoqHYp">cosmosdb.py</a></p>
 				</section>
 
 				<section><!----------------------------------- Slide -------------------------------------------------------->
@@ -93,7 +139,124 @@
 				</section>
 
 				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<h2>Keyvault Service</h2>
+					<pre><code class="hljs" data-trim contenteditable>
+from azure.keyvault import KeyVaultClient, KeyVaultId
+from azure.common.credentials import ServicePrincipalCredentials
+
+class KeyVault:
+  def __init__(self, uri, config):
+    self.client = KeyVaultClient(
+	  ServicePrincipalCredentials(
+		client_id=..., secret=..., tenant=...))
+
+  def create_key(self, key_name, key_type):
+	key_bundle = self.client.create_key(self.keyvault_uri, ...
+	key_id = KeyVaultId.parse_key_id(key_bundle.key.kid)
+	return key_id
+					</code></pre>
+					<p>GitHub link: <a href="http://ianp.co/2xpvuZq">keyvault.py</a></p>
+				</section>
+
+				<section><!----------------------------------- Slide -------------------------------------------------------->
 					<img src="img/Spotify_logo.png" style="background:none; border:none; box-shadow:none;" alt="Spotify Logo">
+				</section>
+
+				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<h2>Spotify Service</h2>
+					<pre><code class="hljs" data-trim contenteditable>
+import json
+import wikipedia
+
+class WikiData:
+  def __init__(self, page_name):
+    self.page_name = page_name
+	
+  def get_page_links(self):
+    big_hair_list = wikipedia.page(self.page_name)
+    return big_hair_list.links
+					</code></pre>
+					<p>GitHub link: <a href="http://ianp.co/2yfFamr">spotify.py</a></p>
+				</section>
+
+				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<h3>Genius Lyrics</h3>
+					<img src="img/Genius_logo.png" style="background:none; border:none; box-shadow:none;" alt="Keyvault Logo">
+				</section>
+
+				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<h2>Genius Lyrics Service</h2>
+					<pre><code class="hljs" data-trim contenteditable>
+import requests
+from bs4 import BeautifulSoup
+
+class Lyrics:
+	def __init__(self, config):
+		self.config = config
+		self.base_url = "http://api.genius.com"
+		self.headers = {'Authorization': 'Bearer ' + self.config.genius_sec}
+
+	def lyrics_from_song_api_path(self, song_api_path):
+		song_url = self.base_url + song_api_path
+					</code></pre>
+					<p>GitHub link: <a href="http://ianp.co/2xGYZGv">genius_lyrics.py</a></p>
+				</section>
+
+				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<h3>Cognitive Services</h3>
+					<img src="img/Cog_logo.png" style="background:none; border:none; box-shadow:none;" alt="Keyvault Logo">
+				</section>
+
+				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<h2>AI Service</h2>
+					<pre><code class="hljs" data-trim contenteditable>
+import json
+import urllib
+import http.client
+
+class Cognitive_Services:
+	def __init__(self, config):
+		self.config = config
+
+	def get_sentiment(self, document):
+		"Gets the sentiments for a set of documents and returns the information."
+
+		doc = { 'documents': [
+			{ 'id': '1', 'language': 'en', 'text': document }
+		]}
+					</code></pre>
+					<p>GitHub link: <a href="http://ianp.co/2jzqE65">cog_svc.py</a></p>
+				</section>
+
+				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<p>Great! So how do we break it?</p>
+				</section>
+
+				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<ul>
+						<li>Data &amp; Data &amp; Data</li>
+						<li>Data Science!</li>
+					</ul>
+				</section>
+
+				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<p>Gotcha! So how can we make it better?</p>
+				</section>
+
+				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<ul>
+						<li>TensorFlow, CNTK</li>
+						<li>Averages</li>
+						<li>Cosmos DB Graph</li>
+					</ul>
+				</section>
+
+				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<img src="img/crazy.gif" style="background:none; border:none; box-shadow:none;" alt="Two Dogs">
+				</section>
+				
+				<section><!----------------------------------- Slide -------------------------------------------------------->
+					<h2><a href="http://about.me/iphilpot" style="text-transform: none">http://about.me/iphilpot</a></h2>
 				</section>
 			</div>
 		</div>
@@ -106,11 +269,20 @@
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+				controls: false,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'concave', // none/fade/slide/convex/concave/zoom
+
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() {
+						hljs.initHighlightingOnLoad(); 
+					} }
 				]
 			});
 		</script>
